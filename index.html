@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrasi Seminar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="styleRegistrasi.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <header class="bg-sky-500 shadow-md py-4">
+        <div class="container mx-auto px-4">
+            <h1 class="text-2xl font-semibold text-center text-black">Registrasi Seminar IT PNM Summit</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <main>
+            <form id="registrationForm" class="space-y-4">
+                <div>
+                    <label for="namaLengkap" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+                    <input type="text" id="namaLengkap" name="namaLengkap" class="mt-1 block w-full" required>
+                    <p id="namaLengkapError" class="error-message"></p>
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="email" name="email" class="mt-1 block w-full" required>
+                    <p id="emailError" class="error-message"></p>
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" id="password" name="password" class="mt-1 block w-full" required>
+                    <p id="passwordError" class="error-message"></p>
+                </div>
+                <div>
+                    <label for="konfirmasiPassword" class="block text-sm font-medium text-gray-700">Konfirmasi Password</label>
+                    <input type="password" id="konfirmasiPassword" name="konfirmasiPassword" class="mt-1 block w-full" required>
+                    <p id="konfirmasiPasswordError" class="error-message"></p>
+                </div>
+                <div>
+                    <label for="tanggalLahir" class="block text-sm font-medium text-gray-700">Tanggal Lahir</label>
+                    <input type="date" id="tanggalLahir" name="tanggalLahir" class="mt-1 block w-full" required>
+                    <p id="tanggalLahirError" class="error-message"></p>
+                </div>
+                <div>
+                    <label for="nomorHP" class="block text-sm font-medium text-gray-700">Nomor HP</label>
+                    <input type="tel" id="nomorHP" name="nomorHP" class="mt-1 block w-full" required>
+                    <p id="nomorHPError" class="error-message"></p>
+                </div>
+                <div>
+                    <button type="submit" id="submitBtn" class="w-full py-2 px-4 rounded" disabled>Daftar</button>
+                </div>
+                <p id="successMessage" class="text-green-500 font-semibold hidden">Registrasi Berhasil!</p>
+            </form>
+        </main>
+    </div>
+
+    <footer class="bg-sky-500 text-black py-4 mt-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>Mochammad Yusuf Tri Adi Rahmawan/243307016</p>
+        </div>
+    </footer>
+
+    <script>
+        const namaLengkapInput = document.getElementById('namaLengkap');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const konfirmasiPasswordInput = document.getElementById('konfirmasiPassword');
+        const tanggalLahirInput = document.getElementById('tanggalLahir');
+        const nomorHPInput = document.getElementById('nomorHP');
+
+        const namaLengkapError = document.getElementById('namaLengkapError');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+        const konfirmasiPasswordError = document.getElementById('konfirmasiPasswordError');
+        const tanggalLahirError = document.getElementById('tanggalLahirError');
+        const nomorHPError = document.getElementById('nomorHPError');
+
+        const submitBtn = document.getElementById('submitBtn');
+        const successMessage = document.getElementById('successMessage');
+        const registrationForm = document.getElementById('registrationForm');
+
+        function validateForm() {
+            let isFormValid = true;
+
+            // Validasi Nama Lengkap
+            if (namaLengkapInput.value.length < 3) {
+                namaLengkapError.textContent = "Nama lengkap harus minimal 3 karakter.";
+                isFormValid = false;
+            } else {
+                namaLengkapError.textContent = "";
+            }
+
+            // Validasi Email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(emailInput.value)) {
+                emailError.textContent = "Format email tidak valid.";
+                isFormValid = false;
+            } else {
+                emailError.textContent = "";
+            }
+
+            // Validasi Password
+            if (passwordInput.value.length < 8) {
+                passwordError.textContent = "Password harus minimal 8 karakter.";
+                isFormValid = false;
+            } else {
+                passwordError.textContent = "";
+            }
+
+            // Validasi Konfirmasi Password
+            if (passwordInput.value !== konfirmasiPasswordInput.value) {
+                konfirmasiPasswordError.textContent = "Konfirmasi password tidak sesuai.";
+                isFormValid = false;
+            } else {
+                konfirmasiPasswordError.textContent = "";
+            }
+
+            // Validasi Tanggal Lahir
+            const tanggalLahir = new Date(tanggalLahirInput.value);
+            const batasTanggalLahir = new Date('2006-12-31');
+            if (tanggalLahir > batasTanggalLahir) {
+                tanggalLahirError.textContent = "Tanggal lahir tidak boleh lebih dari 2006.";
+                isFormValid = false;
+            } else {
+                tanggalLahirError.textContent = "";
+            }
+
+            // Validasi Nomor HP
+            const nomorHPRegex = /^(?:\+62|0)[2-9][0-9]{8,11}$/;
+            if (!nomorHPRegex.test(nomorHPInput.value)) {
+                nomorHPError.textContent = "Format nomor HP tidak valid (contoh: +628 atau 08).";
+                isFormValid = false;
+            } else {
+                nomorHPError.textContent = "";
+            }
+
+            // Aktifkan/Nonaktifkan tombol submit
+            submitBtn.disabled = !isFormValid;
+            return isFormValid;
+        }
+
+        // Panggil validateForm() setiap kali ada perubahan input
+        namaLengkapInput.addEventListener('input', validateForm);
+        emailInput.addEventListener('input', validateForm);
+        passwordInput.addEventListener('input', validateForm);
+        konfirmasiPasswordInput.addEventListener('input', validateForm);
+        tanggalLahirInput.addEventListener('input', validateForm);
+        nomorHPInput.addEventListener('input', validateForm);
+
+        registrationForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            if (validateForm()) {
+                successMessage.classList.remove('hidden');
+                registrationForm.reset();
+                submitBtn.disabled = true; // Menonaktifkan tombol setelah submit
+                setTimeout(() => {
+                    successMessage.classList.add('hidden');
+                    submitBtn.disabled = false; // Mengaktifkan tombol kembali setelah beberapa detik
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
